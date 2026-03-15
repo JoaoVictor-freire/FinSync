@@ -13,7 +13,7 @@ export class AuthService {
         private readonly prisma: PrismaService
     ){}
 
-    async create(createUserDTO: CreateUserDTO) : Promise<usuario>{
+    async create(createUserDTO: CreateUserDTO) : Promise<Omit<usuario, 'senha'>>{
         const [existingCPF, existingEmail] = await Promise.all([
             this.prisma.usuario.findUnique({ where: {cpf: createUserDTO.cpf} }),
             this.prisma.usuario.findUnique({ where: {email: createUserDTO.email}})
@@ -23,15 +23,17 @@ export class AuthService {
             throw new ConflictException('Email ou CPF já cadastrados')
         }
 
-        return this.prisma.usuario.create({
-            data: {
-                nome: createUserDTO.nome,
-                email: createUserDTO.email,
-                senha: await this.encryptPassword(createUserDTO.senha),
-                cpf: createUserDTO.cpf
-            }}
+        const user = await this.prisma.usuario.create({
+            data:{
+                ...createUserDTO,
+                senha: await this.encryptPassword(createUserDTO.senha)
+            }
             
-        );
+        });
+
+        const {senha, ...result} = user;
+
+        return result;
     }
 
     async login(loginUserDTO: LoginUserDTO) : Promise<Omit<usuario, 'senha'>>{
