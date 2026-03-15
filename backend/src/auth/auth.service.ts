@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma.service.js';
 import { CreateUserDTO } from './dto/create-user.dto.js';
 import { LoginUserDTO } from './dto/login-user.dto.js';
 import { usuario } from '../../generated/prisma/browser.js';
+import bcrypt from 'bcrypt';
+
 
 
 @Injectable()
@@ -25,7 +27,7 @@ export class AuthService {
             data: {
                 nome: createUserDTO.nome,
                 email: createUserDTO.email,
-                senha: createUserDTO.senha,
+                senha: await this.encryptPassword(createUserDTO.senha),
                 cpf: createUserDTO.cpf
             }}
             
@@ -34,12 +36,22 @@ export class AuthService {
 
     async login(loginUserDTO: LoginUserDTO) : Promise<Omit<usuario, 'senha'>>{
         const user = await this.prisma.usuario.findUnique({where: loginUserDTO.cpf ? {cpf: loginUserDTO.cpf} : {email: loginUserDTO.email}})
-
-        if(!user || user.senha != loginUserDTO.senha || !loginUserDTO.senha){
+        if(!user|| !loginUserDTO.senha){
             throw new UnauthorizedException('Credenciais inválidas')
+        }
+
+        const matchPassword = await bcrypt.compare(loginUserDTO.senha, user.senha);
+        if(!matchPassword){
+            throw new UnauthorizedException('Credenciais inválidas'); 
         }
         const {senha, ...result} = user
 
         return result;
+    }
+
+    async encryptPassword(senha: string) : Promise<string>{
+        const salt =  bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(senha, salt);
+        return hash;
     }
 }
