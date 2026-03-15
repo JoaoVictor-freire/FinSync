@@ -2,7 +2,9 @@ import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/co
 import { PrismaService } from '../prisma.service.js';
 import { CreateUserDTO } from './dto/create-user.dto.js';
 import { LoginUserDTO } from './dto/login-user.dto.js';
+import { LoginResponseDTO } from './dto/login-response.dto.js';
 import { usuario } from '../../generated/prisma/browser.js';
+import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 
 
@@ -10,7 +12,8 @@ import bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
     constructor (
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly jwtService: JwtService
     ){}
 
     async create(createUserDTO: CreateUserDTO) : Promise<Omit<usuario, 'senha'>>{
@@ -36,7 +39,7 @@ export class AuthService {
         return result;
     }
 
-    async login(loginUserDTO: LoginUserDTO) : Promise<Omit<usuario, 'senha'>>{
+    async login(loginUserDTO: LoginUserDTO) : Promise<LoginResponseDTO>{
         const user = await this.prisma.usuario.findUnique({where: loginUserDTO.cpf ? {cpf: loginUserDTO.cpf} : {email: loginUserDTO.email}})
         if(!user|| !loginUserDTO.senha){
             throw new UnauthorizedException('Credenciais inválidas')
@@ -48,7 +51,10 @@ export class AuthService {
         }
         const {senha, ...result} = user
 
-        return result;
+        const payload = {sub: user.idusuario, email: user.email, cpf: user.cpf}
+        const access_token = this.jwtService.sign(payload)
+
+        return {...result, access_token};
     }
 
     async encryptPassword(senha: string) : Promise<string>{
