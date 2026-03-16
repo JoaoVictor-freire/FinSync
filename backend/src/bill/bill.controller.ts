@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, Delete, Body, Param, Request, UseGuards } from '@nestjs/common';
 import { BillService } from './bill.service.js';
 import { ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateBillDTO } from './dto/create-bill.dto.js';
@@ -18,4 +18,11 @@ export class BillController {
         return this.billService.create(createBillDTO, req.user.sub)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @Delete('deletebill/:idConta')
+    @ApiOperation({summary: "Deletar conta"})
+    delete(@Param('idConta') idConta: string, @Request() req){
+        return this.billService.delete(idConta, req.user.sub);
+    }
 }
