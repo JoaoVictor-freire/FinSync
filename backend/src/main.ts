@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('FinSync API')
     .setDescription('API de gerenciamento financeiro')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

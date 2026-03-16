@@ -12,21 +12,21 @@ import bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
     constructor (
-        private readonly prisma: PrismaService,
+        private readonly prismaService: PrismaService,
         private readonly jwtService: JwtService
     ){}
 
     async create(createUserDTO: CreateUserDTO) : Promise<Omit<usuario, 'senha'>>{
         const [existingCPF, existingEmail] = await Promise.all([
-            this.prisma.usuario.findUnique({ where: {cpf: createUserDTO.cpf} }),
-            this.prisma.usuario.findUnique({ where: {email: createUserDTO.email}})
+            this.prismaService.usuario.findUnique({ where: {cpf: createUserDTO.cpf} }),
+            this.prismaService.usuario.findUnique({ where: {email: createUserDTO.email}})
         ]);
 
         if (existingCPF || existingEmail){
             throw new ConflictException('Email ou CPF já cadastrados')
         }
 
-        const user = await this.prisma.usuario.create({
+        const user = await this.prismaService.usuario.create({
             data:{
                 ...createUserDTO,
                 senha: await this.encryptPassword(createUserDTO.senha)
@@ -40,7 +40,7 @@ export class AuthService {
     }
 
     async login(loginUserDTO: LoginUserDTO) : Promise<LoginResponseDTO>{
-        const user = await this.prisma.usuario.findUnique({where: loginUserDTO.cpf ? {cpf: loginUserDTO.cpf} : {email: loginUserDTO.email}})
+        const user = await this.prismaService.usuario.findUnique({where: loginUserDTO.cpf ? {cpf: loginUserDTO.cpf} : {email: loginUserDTO.email}})
         if(!user|| !loginUserDTO.senha){
             throw new UnauthorizedException('Credenciais inválidas')
         }

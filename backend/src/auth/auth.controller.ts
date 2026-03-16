@@ -16,8 +16,8 @@ export class AuthController {
     @ApiOperation({ summary: 'Criar novo usuário' })
     @ApiCreatedResponse({ description: 'Usuário criado com sucesso' })
     @ApiConflictResponse({ description: 'Email e/ou CPF já cadastrados' })
-    create(@Body() CreateUserDTO: CreateUserDTO){
-        return this.authService.create(CreateUserDTO);
+    create(@Body() createUserDTO: CreateUserDTO){
+        return this.authService.create(createUserDTO);
     }
 
     @Post('login')
