@@ -2,16 +2,8 @@
 
 @theme {
   --color-brand-green: #00D09E;
-  --color-brand-blue: #2563eb;
-  --color-brand-purple: #7c3aed;
-  --color-brand-red: #dc2626;
-  --color-custom-green: #F1FFF3;
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
   --color-light-green: #DFF7E2;
+  --color-dark-green: #0E3E3E;
   --color-background-green: #F1FFF3;
   --color-letters-green: #093030;
 }

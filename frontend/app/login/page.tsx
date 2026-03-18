@@ -42,11 +42,11 @@ export default function Login(){
     return(
         <div className="bg-white min-h-screen flex ">
             {/*Lado Esquerdo*/}
-            <div className="bg-brand-green shadow-md w-3/5 rounded-r-lg flex flex-col items-center justify-center gap-10">
+            <div className="bg-brand-green shadow-md w-3/5 rounded-r-lg flex flex-col items-center justify-center gap-10 relative">
                 <span className="font-semibold text-3xl text-letters-green">
                     Welcome to, FinSync!
                 </span>
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                 <img 
                   src="/black_logo.svg" 
                   alt="FinSync Logo" 
