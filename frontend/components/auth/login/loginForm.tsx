@@ -2,7 +2,7 @@
 
 import { Input } from "../../ui/input"
 import { CiMail, CiLock } from "react-icons/ci";
-import { useLoginForm } from "@/hooks/useLoginForm";
+import { useLoginForm } from "@/hooks/auth/useLoginForm";
 
 export function LoginForm(){
     const {
@@ -15,7 +15,7 @@ export function LoginForm(){
     } = useLoginForm();
 
     return(
-        <form className=" w-full max-w-md p-8 flex flex-col gap-3" onSubmit={handleSubmit}>
+        <form className="w-full max-w-md p-8 flex flex-col gap-3" onSubmit={handleSubmit}>
             <Input
             id="email"
             label="Email"
