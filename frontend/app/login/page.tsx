@@ -1,50 +1,14 @@
 'use client'
 
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { CiMail, CiLock } from "react-icons/ci";
+import { LoginForm } from "@/components/auth/loginFrom";
 
 export default function Login(){
-    const [identifier, setIdentifier] = useState('')
-    const [password, setPassword] = useState('')
-
-    const isCPF = (value: string) => /^\d/.test(value)
-
-    const formatCPF = (value: string) => {
-        const numbers = value.replace(/\D/g, '').slice(0, 11)
-        return numbers.replace(/(\d{3})(\d{3})?(\d{3})?(\d{2})?/, (_, p1, p2, p3, p4) => {
-            let result = p1
-            if (p2) result += '.' + p2
-            if (p3) result += '.' + p3
-            if (p4) result += '-' + p4
-            return result
-        })
-    }
-
-    const handleIdentifierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        if (isCPF(value)) {
-            setIdentifier(formatCPF(value))
-        } else {
-            setIdentifier(value)
-        }
-    }
-
-    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const cleanCPF = identifier.replace(/\D/g, '')
-        const isEmail = identifier.includes('@')
-        console.log({
-            type: isEmail ? 'email' : 'cpf',
-            identifier: isEmail ? identifier : cleanCPF,
-            password
-        })
-    }
+    
 
     return(
         <div className="bg-white min-h-screen flex ">
             {/*Lado Esquerdo*/}
-            <div className="bg-brand-green shadow-md w-3/5 rounded-r-lg flex flex-col items-center justify-center gap-10 relative">
+            <div className="bg-brand-green shadow-md w-3/5 flex flex-col items-center justify-center gap-10 relative">
                 <span className="font-semibold text-3xl text-letters-green">
                     Welcome to, FinSync!
                 </span>
@@ -59,25 +23,9 @@ export default function Login(){
             </div>
 
             {/*Lado Direito*/}
-            <div className="bg-background-green shadow-lg w-2/5 flex flex-col items-center justify-center rounded-l-xl -ml-4">
-
-                <div>
-                    <header className="font-semibold text-letters-green text-4xl">WELCOME</header>
-                </div>
-
-                <form className="w-full max-w-md p-8 flex flex-col gap-3" onSubmit={handleSubmit}>
-
-                    <Input label="Email" iconLeft={<CiMail size={20}/>} className="w-full" placeholder="Digite seu Email/CPF"/>
-
-                    <Input label="Senha" iconLeft={<CiLock size={20}/>} className="w-full" placeholder="Digite sua senha"/>
-
-                    <button
-                    type="submit"
-                    className="w-full bg-brand-green text-white py-2 rounded-md"
-                    >
-                        Entrar
-                    </button>
-                </form>
+            <div className="bg-white shadow-lg w-2/5 flex flex-col items-center justify-center ">
+            <header className="font-bold text-letters-green text-3xl">Bem-vindo de volta!</header>
+            <LoginForm/>
             </div>
         </div>
     );
