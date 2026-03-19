@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
-import { LoginButton } from "../auth/loginButton";
-import { RegisterButton } from "../auth/registerButton";
+import { LoginButton } from "../auth/login/loginButton";
+import { RegisterButton } from "../auth/register/registerButton";
 
 export function HomePageHeader(){
     const router = useRouter();
@@ -16,7 +16,7 @@ export function HomePageHeader(){
                 <div className="flex justify-between items-center h-20">
                 {/* Logo */}
                 <div className="flex items-center">
-                    <div className="shrink-0">
+                    <div className="shrink-0">  
                     <img 
                         src="/logo.svg" 
                         alt="FinSync Logo" 

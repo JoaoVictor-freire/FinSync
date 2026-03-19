@@ -1,7 +1,7 @@
 'use client'
 
 import React, { use, useState } from "react"
-import { Input } from "../ui/input"
+import { Input } from "../../ui/input"
 import { CiMail, CiLock } from "react-icons/ci";
 
 export function LoginForm(){
@@ -34,12 +34,44 @@ export function LoginForm(){
         e.preventDefault()
         const cleanCPF = identifier.replace(/\D/g, '')
         const isEmail = identifier.includes('@')
+
+        try{
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+                {
+                    method: 'POST',
+                    headers: {'Content-type': 'application/json'},
+                    body: JSON.stringify({email: identifier, senha:password})
+                }    
+            )
+
+            const data = await response.json()
+            console.log('Sucesso: ', data)
+        }catch(error){
+            console.log('Erro: ', error)
+        }
     }
 
     return(
         <form className=" w-full max-w-md p-8 flex flex-col gap-3" onSubmit={handleSubmit}>
-            <Input label="Email" iconLeft={<CiMail size={20}/>} className="w-full" placeholder="Digite seu Email/CPF"/>
-            <Input label="Senha" iconLeft={<CiLock size={20}/>} className="w-full" placeholder="Digite sua senha"/>
+            <Input
+            id="email"
+            label="Email"
+            iconLeft={<CiMail size={20}/>}
+            className="w-full"
+            placeholder="Digite seu Email/CPF"
+            value={identifier}
+            onChange={handleIdentifierChange}
+            />
+            <Input
+            id="senha"
+            label="Senha"
+            iconLeft={<CiLock size={20}/>}
+            className="w-full"
+            placeholder="Digite sua senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            />
             <button type="submit" className="w-full bg-brand-green text-white py-2 rounded-md mt-4">
                 Entrar
             </button>
