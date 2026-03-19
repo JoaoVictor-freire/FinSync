@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { CiMail, CiLock } from "react-icons/ci";
 
 export default function Login(){
     const [identifier, setIdentifier] = useState('')
@@ -63,26 +65,11 @@ export default function Login(){
                     <header className="font-semibold text-letters-green text-4xl">WELCOME</header>
                 </div>
 
-                <form className="w-full max-w-md p-8 flex flex-col" onSubmit={handleSubmit}>
+                <form className="w-full max-w-md p-8 flex flex-col gap-3" onSubmit={handleSubmit}>
 
-                    <label className="text-center text-gray-800 flex">Email</label>
-                    <input 
-                    type="text"
-                    value={identifier}
-                    onChange={handleIdentifierChange}
-                    className="bg-light-green text-gray-800 p-2 rounded border border-gray-300 mb-4 text-sm"
-                    placeholder="Digite seu Email/CPF"
-                    />
-                    
+                    <Input label="Email" iconLeft={<CiMail size={20}/>} className="w-full" placeholder="Digite seu Email/CPF"/>
 
-                    <label className="text-center text-gray-800 flex">Senha</label>
-                    <input
-                    type="text"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-light-green text-gray-800 p-2 rounded border border-gray-300 mb-6 text-sm"
-                    placeholder="Insira sua senha"
-                    />
+                    <Input label="Senha" iconLeft={<CiLock size={20}/>} className="w-full" placeholder="Digite sua senha"/>
 
                     <button
                     type="submit"
