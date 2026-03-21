@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function useLoginForm(){
+    const router = useRouter();
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +30,10 @@ export function useLoginForm(){
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!identifier || !password) {
+            return;
+        }
+        
         setIsLoading(true);
 
         const cleanIdentifier = identifier.includes('@') ? identifier : identifier.replace(/\D/g, '');
@@ -45,6 +51,8 @@ export function useLoginForm(){
 
             if(!response.ok){
                 throw new Error(data.message || 'Erro ao realizar login');
+            }else{
+                router.push('/dashboard')
             }
 
             console.log('Login bem-sucedido: ', data);

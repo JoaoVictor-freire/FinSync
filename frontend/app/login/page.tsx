@@ -1,6 +1,7 @@
 'use client'
 
 import { LoginForm } from "@/components/auth/login/loginForm";
+import { BackButton } from "@/components/ui/backbutton";
 
 export default function Login(){
     
@@ -24,8 +25,7 @@ export default function Login(){
 
             {/*Lado Direito*/}
             <div className="bg-white shadow-lg w-2/5 flex flex-col items-center justify-center ">
-            <header className="font-bold text-letters-green text-3xl">Bem-vindo de volta!</header>
-            <LoginForm/>
+                <LoginForm/>
             </div>
         </div>
     );

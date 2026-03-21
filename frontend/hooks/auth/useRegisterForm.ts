@@ -1,7 +1,8 @@
-import { error } from "console";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function useRegisterForm(){
+    const router = useRouter();
     const [name, setName] = useState('');
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
@@ -21,6 +22,10 @@ export function useRegisterForm(){
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) =>{
         e.preventDefault();
+        if (!name || !cpf || !email || !password) {
+            return;
+        }
+        
         setIsLoading(true);
 
         try{
@@ -29,7 +34,7 @@ export function useRegisterForm(){
                 headers: {'Content-type': 'application/json'},
                 body: JSON.stringify({
                     nome: name,
-                    cpf: cpf,
+                    cpf: cpf.replace(/\D/g, ''),
                     email: email,
                     senha: password,
                 })
@@ -38,6 +43,8 @@ export function useRegisterForm(){
 
             if(!response.ok){
                 throw new Error(data.message || 'Erro ao registrar-se')
+            }else{
+                router.push('/login')
             }
 
             console.log('Sucesso ao registrar-se: ', data);
@@ -46,7 +53,7 @@ export function useRegisterForm(){
             console.log('Erro no hook: ', error)
             alert('Falha no registro. Verifique se os campos estão corretamente preenchidos.')
         }finally{
-            setIsLoading(true);
+            setIsLoading(false);
         }
     }
     return {

@@ -23,8 +23,7 @@ export default function Register(){
 
             {/*Lado Direito*/}
             <div className="bg-white shadow-lg w-2/5 flex flex-col items-center justify-center ">
-            <header className="font-bold text-letters-green text-3xl">Bem-vindo de volta!</header>
-            <RegisterForm/>
+                <RegisterForm/>
             </div>
         </div>
     );
