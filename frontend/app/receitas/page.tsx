@@ -2,7 +2,7 @@
 
 import { Header } from "@/components/layout/header";
 
-export default function Dashboard(){
+export default function Receitas(){
     return(
         <div className="bg-white min-h-screen">
             <div className="min-h-screen bg-background-green flex flex-col">
